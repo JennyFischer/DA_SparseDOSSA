@@ -18,6 +18,7 @@ lognormal <- read.delim("~/Desktop/lognorm.tsv", header=FALSE, row.names=NULL)
 rownames(lognormal) <- paste0("OTU", 1:nrow(lognormal))
 colnames(lognormal) <- paste0("Sample", 1:ncol(lognormal))
 OTU_lognorm = otu_table(lognormal, taxa_are_rows = TRUE)
+write.table(OTU_lognorm, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/OTU_lognormal.tsv", row.names=TRUE, sep="\t")
 
 #OTU file for spiked-in absolute abundancess
 #first seperate python script an manual deletion of first two columns
@@ -25,6 +26,7 @@ logspike <- read.delim("~/Desktop/spike.tsv", header=FALSE, row.names=NULL)
 rownames(logspike) <- paste0("OTU", 1:nrow(logspike))
 colnames(logspike) <- paste0("Sample", 1:ncol(logspike))
 OTU_logspike = otu_table(logspike, taxa_are_rows = TRUE)
+write.table(OTU_lognorm, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/OTU_logspike.tsv", row.names=TRUE, sep="\t")
 
 ############ NORMALIZATION ####################################################
 #for the null (i.e., not spiked-in) absolute abundances
@@ -60,17 +62,17 @@ norm_clr_logspike
 write.csv(norm_clr_logspike, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/Normalisation_output/normalise_logspike_clr.csv", row.names = TRUE)
 
 #css normalization
-norm_css_logspike = normalize(lognormal, "CSS")
+norm_css_logspike = normalize(logspike, "CSS")
 norm_css_logspike
 write.csv(norm_css_logspike, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/Normalisation_output/normalise_logspike_css.csv", row.names = TRUE)
 
 #tss normalization
-norm_tss_logspike = normalize(lognormal, "TSS")#norm_tss(OTU)
+norm_tss_logspike = normalize(logspike, "TSS")#norm_tss(OTU)
 norm_tss_logspike
 write.csv(norm_tss_logspike, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/Normalisation_output/normalise_logspike_tss.csv", row.names = TRUE)
 
 #relative abundance normalization
-norm_relab_logspike = transform(lognormal, 'compositional')
+norm_relab_logspike = transform(logspike, 'compositional')
 norm_relab_logspike
 write.csv(norm_relab_logspike, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/Normalisation_output/normalise_logspike_relab.csv", row.names = TRUE)
 
@@ -86,13 +88,20 @@ taxmat_lognormal_norm_clr = matrix(sample(letters, 100, replace = TRUE), nrow = 
 rownames(taxmat_lognormal_norm_clr) <- rownames(OTU_lognormal_norm_clr)
 colnames(taxmat_lognormal_norm_clr) <- c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
 TAX_lognormal_norm_clr = tax_table(taxmat_lognormal_norm_clr)
+#write.tsv(TAX_lognormal_norm_clr, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/taxa_file.tsv", row.names = TRUE)
+write.table(TAX_lognormal_norm_clr, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/taxa_file.tsv", row.names=TRUE, sep="\t")
+
 physeq_lognormal_norm_clr = phyloseq(OTU_lognormal_norm_clr, TAX_lognormal_norm_clr)
 
 #Sample file with Metadata 
 conds_lognormal_norm_clr = c(1,	0,	1,	1,	1,	1,	0,	1,	1,	1,	0,	0,	1,	1,	0,	1,	0,	1,	0,	1,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	1,	1,	1,	1,	1,	0,	0,	0,	1,	0,	1,	0,	0,	1,	1,	0,	1,	1,	1,	1,	0,	0,	0,	1,	1,	0,	0,	1,	0,	0,	0,	0,	1,	0,	0,	1,	0,	0,	0,	0,	0,	0,	1,	0,	0,	1,	1,	0,	1,	1,	0,	0,	1,	0,	0,	1,	0,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	0,	0)
 sample_data_lognormal_norm_clr = sample_data(data.frame(Group = sample(conds_lognormal_norm_clr, size=nsamples(physeq_lognormal_norm_clr), 
                                                               replace=TRUE),row.names=sample_names(physeq_lognormal_norm_clr),stringsAsFactors=FALSE))
+sample_data_lognormal_norm_clr
 #write.csv(sample_data, file = "metadata.csv", row.names = TRUE)
+write.table(sample_data_lognormal_norm_clr, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/metadata.tsv", row.names=TRUE, sep="\t")
+
+
 
 #physeq class
 physeq_lognormal_norm_clr = phyloseq(OTU_lognormal_norm_clr, TAX_lognormal_norm_clr, sample_data_lognormal_norm_clr)
@@ -648,4 +657,5 @@ wlx_pvalues_logspike_norm_relab
 #ordnen der OTU fehlt
 #write.csv(wlx_pvalues, file = "wlx_pvalues.csv", row.names = TRUE)
 write.csv(wlx_pvalues_logspike_norm_relab, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/outputs/wilcoxon_output/wlx_pvalues_logspike_norm_relab.csv", row.names = FALSE)
+
 
