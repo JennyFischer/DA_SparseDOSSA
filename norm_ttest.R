@@ -15,6 +15,8 @@ lognormal <- read.delim("~/Desktop/lognorm.tsv", header=FALSE, row.names=NULL)
 rownames(lognormal) <- paste0("OTU", 1:nrow(lognormal))
 colnames(lognormal) <- paste0("Sample", 1:ncol(lognormal))
 OTU_lognorm = otu_table(lognormal, taxa_are_rows = TRUE)
+OTU_lognorm
+write.csv(OTU_lognorm, file = "/Users/jf/Desktop/OTU_lognorm.csv", row.names = TRUE)
 
 #OTU file for spiked-in absolute abundancess
 #first seperate python script an manual deletion of first two columns
@@ -22,6 +24,7 @@ logspike <- read.delim("~/Desktop/spike.tsv", header=FALSE, row.names=NULL)
 rownames(logspike) <- paste0("OTU", 1:nrow(logspike))
 colnames(logspike) <- paste0("Sample", 1:ncol(logspike))
 OTU_logspike = otu_table(logspike, taxa_are_rows = TRUE)
+write.csv(OTU_logspike, file = "/Users/jf/Desktop/OTU_logspike.csv", row.names = TRUE)
 
 ############ NORMALIZATION ####################################################
 #for the null (i.e., not spiked-in) absolute abundances
@@ -57,17 +60,17 @@ norm_clr_logspike
 write.csv(norm_clr_logspike, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/Normalisation_output/normalise_logspike_clr.csv", row.names = TRUE)
 
 #css normalization
-norm_css_logspike = normalize(lognormal, "CSS")
+norm_css_logspike = normalize(logspike, "CSS")
 norm_css_logspike
 write.csv(norm_css_logspike, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/Normalisation_output/normalise_logspike_css.csv", row.names = TRUE)
 
 #tss normalization
-norm_tss_logspike = normalize(lognormal, "TSS")#norm_tss(OTU)
+norm_tss_logspike = normalize(logspike, "TSS")#norm_tss(OTU)
 norm_tss_logspike
 write.csv(norm_tss_logspike, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/Normalisation_output/normalise_logspike_tss.csv", row.names = TRUE)
 
 #relative abundance normalization
-norm_relab_logspike = transform(lognormal, 'compositional')
+norm_relab_logspike = transform(logspike, 'compositional')
 norm_relab_logspike
 write.csv(norm_relab_logspike, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/Normalisation_output/normalise_logspike_relab.csv", row.names = TRUE)
 
@@ -592,5 +595,4 @@ tt_pvalues_logspike = dlong_logspike %>%
   summarise(p=t.test(value~group)$p.value)
 tt_pvalues_logspike
 write.csv(tt_pvalues_logspike, file = "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/outputs/ttest_output/tt_pvalues_logspike_norm_relab.csv", row.names = FALSE)
-
 
