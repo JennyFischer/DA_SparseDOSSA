@@ -2,7 +2,7 @@
 Differential analysis of SparseDOSSA output with different methods and first doing normalisation
 
 
-Description:
+
 I divided the data in the different analysis approaches. The resulting files which I used for my analysis are included in the files and scripts. Some findings are printed in the terminal, like for the file Netcomi_toos_whole_analysis.R some other results are save as files, like in the script NetCoMi_tools.R or Run_Rebacca.R. Due to further analysis of the outputs of for example NetCoMi_tools.R or Run_Rebacca.R it made sense to save them.
 For further information about the analysis and results I included my Bachelor Thesis.
 Differential abundance analysis:
