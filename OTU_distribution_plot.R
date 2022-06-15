@@ -1,15 +1,17 @@
-lognormal <- read.delim("/Users/jf/Desktop/BA/Analysis_SparseDOSSA/OTU_lognormal.tsv", header=TRUE, row.names=NULL)
-logspike <- read.delim("/Users/jf/Desktop/BA/Analysis_SparseDOSSA/OTU_spike.tsv", header=TRUE, row.names=NULL)
+lognormal <- read.delim("./first_dataset/OTU_lognormal.tsv", header=TRUE, row.names=NULL) #BA/Analysis_SparseDOSSA/
+logspike <- read.delim("./first_dataset/OTU_logspike.tsv", header=TRUE, row.names=NULL) #BA/Analysis_SparseDOSSA/
 
 df_norm<-data.frame(lognormal)
-pdf( "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/outputs/plots/lognormal_OTU_distribution.pdf")
-norm_dist = barplot(as.matrix(df_norm),col = rainbow(100),ylab="Counts",
+pdf( "./first_dataset/lognormal_OTU_distribution_exact.pdf")
+norm_dist = barplot(as.matrix(df_norm[2:5]),col = rainbow(100),ylab="Counts",
         main="OTU's Distribution of relative abundance dataset") #,xlab="SampleID"
 dev.off()
 
-
+logspike
 df_spike<-data.frame(logspike)
-pdf( "/Users/jf/Desktop/BA/Analysis_SparseDOSSA/outputs/plots/logspike_OTU_distribution.pdf")
-spike_dist = barplot(as.matrix(df_spike),col = rainbow(100),ylab="Counts",
-        main="OTU's Distribution of relative spike dataset")
+pdf( "./first_dataset/logspike_OTU_distribution_exact.pdf")
+spike_dist = barplot(as.matrix(df_spike[2:5]),col = rainbow(100),ylab="Counts",
+        main="OTU's Distribution of absolut abundance dataset")
 dev.off()
+
+
